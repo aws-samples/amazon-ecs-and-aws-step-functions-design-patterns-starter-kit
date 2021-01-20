@@ -1,0 +1,60 @@
+{
+	"hashKeyWFDetails": "workflow_run_id",
+    "subnetIdLiteral": "subnet-0784bf25d92c9fb8d",
+    "workflowName": "amazon_ecs_starter_kit_pattern_2",
+    "separator": "$",
+    "securityGroupId": "sg-0c9184572c0309fc8",
+    "rangeKeyWFDetails": "ecs_task_id",
+    "ddbTableNameWFDetails": "workflow_details_pattern_2",
+    "containerName": "amazon-ecs-java-starter-kit",
+    "clusterName": "amazon-ecs-java-starter-kit-pattern-2",
+    "hashKeyWFSummary": "workflow_name",
+    "s3BucketName": "927825637834-amazon-ecs-java-starter-kit-pattern-2-bucket",
+    "taskDefinition": "amazon-ecs-java-starter-kit-pattern-2:2",
+    "rangeKeyWFSummary": "workflow_run_id",
+    "region": "us-east-2",
+    "ddbTableNameWFSummary": "workflow_summary_pattern_2",
+    "workflowRunId": "100001",
+	"taskList": [
+		{
+			"taskName": "ECS_task_01",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_02",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_03",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_04",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_05",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_06",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_07",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_08",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_09",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_10",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		}
+	]
+}

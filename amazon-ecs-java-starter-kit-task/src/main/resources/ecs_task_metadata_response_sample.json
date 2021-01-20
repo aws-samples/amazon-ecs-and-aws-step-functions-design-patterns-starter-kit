@@ -1,0 +1,78 @@
+{
+	"Cluster": "arn:aws:ecs:us-east-1:1234567890:cluster/amazon-ecs-java-starter-kit",
+	"TaskARN": "arn:aws:ecs:us-east-1:1234567890:task/amazon-ecs-java-starter-kit/54ffee5791c74a918b349002f133d6b3",
+	"Family": "amazon-ecs-java-starter-kit-task-def",
+	"Revision": "5",
+	"DesiredStatus": "RUNNING",
+	"KnownStatus": "RUNNING",
+	"Containers": [
+		{
+			"DockerId": "7ad0cd7ea75761ce7023eb159cb3d0a3c3008017e04d9d056c8d906141b34497",
+			"Name": "~internal~ecs~pause",
+			"DockerName": "ecs-amazon-ecs-java-starter-kit-task-def-5-internalecspause-96d7e1e9b98f9bdf9401",
+			"Image": "fg-proxy:tinyproxy",
+			"ImageID": "",
+			"Labels": {
+				"com.amazonaws.ecs.cluster": "arn:aws:ecs:us-east-1:1234567890:cluster/amazon-ecs-java-starter-kit",
+				"com.amazonaws.ecs.container-name": "~internal~ecs~pause",
+				"com.amazonaws.ecs.task-arn": "arn:aws:ecs:us-east-1:1234567890:task/amazon-ecs-java-starter-kit/54ffee5791c74a918b349002f133d6b3",
+				"com.amazonaws.ecs.task-definition-family": "amazon-ecs-java-starter-kit-task-def",
+				"com.amazonaws.ecs.task-definition-version": "5"
+			},
+			"DesiredStatus": "RESOURCES_PROVISIONED",
+			"KnownStatus": "RESOURCES_PROVISIONED",
+			"Limits": {
+				"CPU": 0,
+				"Memory": 0
+			},
+			"CreatedAt": "2020-11-10T15:57:23.111119079Z",
+			"StartedAt": "2020-11-10T15:57:23.677759612Z",
+			"Type": "CNI_PAUSE",
+			"Networks": [
+				{
+					"NetworkMode": "awsvpc",
+					"IPv4Addresses": [
+						"10.0.1.215"
+					]
+				}
+			]
+		},
+		{
+			"DockerId": "54543ff716f5caa68cc944568a562479cfe3cc25f072ba7d4839f76f073245b7",
+			"Name": "amazon-ecs-java-starter-kit-ecr",
+			"DockerName": "ecs-amazon-ecs-java-starter-kit-task-def-5-amazon-ecs-java-starter-kit-ecr-c0eeabc1fbf7b5bf1f00",
+			"Image": "1234567890.dkr.ecr.us-east-1.amazonaws.com/amazon-ecs-java-starter-kit-ecr:version1.2",
+			"ImageID": "sha256:f0cfce3b647a530031166a527ebf2582fab91615ccd79c2713dd2ade09834a21",
+			"Labels": {
+				"com.amazonaws.ecs.cluster": "arn:aws:ecs:us-east-1:1234567890:cluster/amazon-ecs-java-starter-kit",
+				"com.amazonaws.ecs.container-name": "amazon-ecs-java-starter-kit-ecr",
+				"com.amazonaws.ecs.task-arn": "arn:aws:ecs:us-east-1:1234567890:task/amazon-ecs-java-starter-kit/54ffee5791c74a918b349002f133d6b3",
+				"com.amazonaws.ecs.task-definition-family": "amazon-ecs-java-starter-kit-task-def",
+				"com.amazonaws.ecs.task-definition-version": "5"
+			},
+			"DesiredStatus": "RUNNING",
+			"KnownStatus": "RUNNING",
+			"Limits": {
+				"CPU": 0,
+				"Memory": 0
+			},
+			"CreatedAt": "2020-11-10T15:59:42.532801596Z",
+			"StartedAt": "2020-11-10T15:59:53.897514965Z",
+			"Type": "NORMAL",
+			"Networks": [
+				{
+					"NetworkMode": "awsvpc",
+					"IPv4Addresses": [
+						"10.0.1.215"
+					]
+				}
+			]
+		}
+	],
+	"Limits": {
+		"CPU": 1,
+		"Memory": 2048
+	},
+	"PullStartedAt": "2020-11-10T15:57:23.849651626Z",
+	"PullStoppedAt": "2020-11-10T15:59:42.517600903Z"
+}

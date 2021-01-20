@@ -1,0 +1,69 @@
+	{
+	 "hashKeyWFDetails": "workflow_run_id",
+    "subnetIdLiteral": "subnet-0d7ff87dbb2f154ab",
+    "workflowName": "amazon_ecs_starter_kit-pattern-1",
+    "separator": "$",
+    "securityGroupId": "sg-05e574e43d9c2f4bc",
+    "rangeKeyWFDetails": "ecs_task_id",
+    "ddbTableNameWFDetails": "workflow_details_pattern_1",
+    "containerName": "amazon-ecs-java-starter-kit",
+    "clusterName": "amazon-ecs-java-starter-kit-pattern-1",
+    "hashKeyWFSummary": "workflow_name",
+    "s3BucketName": "927825637834-amazon-ecs-java-starter-kit-pattern-1-bucket",
+    "taskDefinition": "amazon-ecs-java-starter-kit-pattern-1:2",
+    "rangeKeyWFSummary": "workflow_run_id",
+    "region": "us-east-2",
+    "ddbTableNameWFSummary": "workflow_summary_pattern_1",
+	"taskList": [
+		{
+			"taskName": "ECS_task_01",
+			"s3BucketName": "927825637834-amazon-ecs-java-starter-kit-pattern-1-bucket",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_02",
+			"s3BucketName": "927825637834-amazon-ecs-java-starter-kit-pattern-1-bucket",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_03",
+			"s3BucketName": "927825637834-amazon-ecs-java-starter-kit-pattern-1-bucket",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_04",
+			"s3BucketName": "927825637834-amazon-ecs-java-starter-kit-pattern-1-bucket",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_05",
+			"s3BucketName": "927825637834-amazon-ecs-java-starter-kit-pattern-1-bucket",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_06",
+			"s3BucketName": "927825637834-amazon-ecs-java-starter-kit-pattern-1-bucket",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_07",
+			"s3BucketName": "927825637834-amazon-ecs-java-starter-kit-pattern-1-bucket",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_08",
+			"s3BucketName": "927825637834-amazon-ecs-java-starter-kit-pattern-1-bucket",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_09",
+			"s3BucketName": "927825637834-amazon-ecs-java-starter-kit-pattern-1-bucket",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		},
+		{
+			"taskName": "ECS_task_10",
+			"s3BucketName": "927825637834-amazon-ecs-java-starter-kit-pattern-1-bucket",
+			"objectKey": "amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar"
+		}
+	]
+}
