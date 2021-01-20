@@ -1,11 +1,11 @@
-# Amazon ECS Starter Kit
+# Amazon ECS and AWS Step Functions Design Patterns Starter kit
 
 This starter kit demonstrates how to run [Amazon Elastic Container Service](https://aws.amazon.com/ecs/) (ECS) tasks using [AWS Step Functions](https://aws.amazon.com/step-functions/). We will present following design patterns:
 
  1. ECS task submission from AWS Lambda
  1. ECS task submission from Step Functions State Machine using native service integration
 
-We will use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy application resources.
+We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy application resources.
 
 ---
 
