@@ -116,16 +116,16 @@ Using an Amazon ECS task, we will copy an S3 object from one location to another
 1. Expected output 1: In your IDE, you will see the following output
 
     ```bash
-    [INFO] Reactor Summary for amazon-ecs-java-starter-kit 1.0:
+    [INFO] Reactor Summary for amazon-ecs-java-starter-kit 1.0:
     [INFO] 
-    [INFO] amazon-ecs-java-starter-kit ........................ [SUCCESS [  0.717 s]
-    [INFO] amazon-ecs-java-starter-kit-cdk .................... [SUCCESS [ 14.230 s]
-    [INFO] amazon-ecs-java-starter-kit-tasklauncher ........... [SUCCESS [  8.418 s]
-    [INFO] amazon-ecs-java-starter-kit-task ................... [SUCCESS [ 21.857 s]
-    [INFO] amazon-ecs-java-starter-kit-taskmonitor ............ [SUCCESS [  4.587 s]
-    [INFO] ------------------------------------------------------------------------
-    [INFO] BUILD SUCCESS
-    [INFO] ------------------------------------------------------------------------
+    [INFO] amazon-ecs-java-starter-kit ........................ [SUCCESS [  0.717 s]
+    [INFO] amazon-ecs-java-starter-kit-cdk .................... [SUCCESS [ 14.230 s]
+    [INFO] amazon-ecs-java-starter-kit-tasklauncher ........... [SUCCESS [  8.418 s]
+    [INFO] amazon-ecs-java-starter-kit-task ................... [SUCCESS [ 21.857 s]
+    [INFO] amazon-ecs-java-starter-kit-taskmonitor ............ [SUCCESS [  4.587 s]
+    [INFO] ------------------------------------------------------------------------
+    [INFO] BUILD SUCCESS
+    [INFO] ------------------------------------------------------------------------
     [INFO] Total time:  49.979 s
     [INFO] Finished at: 2020-12-21T13:03:30-06:00
     ```
