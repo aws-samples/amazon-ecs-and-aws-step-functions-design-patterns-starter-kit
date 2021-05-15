@@ -1,6 +1,6 @@
 # Amazon ECS and AWS Step Functions Design Patterns Starter kit
 
-This starter kit demonstrates how to run [Amazon Elastic Container Service](https://aws.amazon.com/ecs/) (ECS) tasks using [AWS Step Functions](https://aws.amazon.com/step-functions/). We will implement following design patterns:
+This starter kit demonstrates how to run [Amazon Elastic Container Service](https://aws.amazon.com/ecs/) (ECS) tasks using [AWS Step Functions](https://aws.amazon.com/step-functions/). We will implement the following design patterns:
 
  1. Running ECS tasks using AWS Lambda
  1. Running ECS tasks using Step Functions native integration
@@ -12,13 +12,14 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 ## Contents
 
 * [Prerequisites](#prerequisites)
-* [Architecture](#Architecture)
+* [Starter kit overview](#Starter-kit-overview)
   * [ECS Task Business Logic](#ecs-task-business-logic)
   * [Amazon DynamoDB Tables](#Amazon-dynamoDB-tables)
   * [Workflow Specification](#Workflow-Specification)
+  * [AWS CDK Stacks](#aws-cdk-stacks)
+* [Patterns](#Patterns)
   * [Architecture Pattern 1: Running ECS tasks using AWS Lambda](#Running-ECS-tasks-using-aws-lambda)
   * [Architecture Pattern 2: Running ECS tasks using Step Functions native integration](#Running-ECS-tasks-using-Step-Functions-native-integration)
-* [AWS CDK Stacks](#aws-cdk-stacks)
 * [Build Instructions](#build-instructions)
 * [Deployment Instructions](#deployment-instructions)
 * [Pattern 1 Testing Instructions](#Pattern-1-testing-instructions)
@@ -36,15 +37,17 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 
 ---
 
-## Architecture
+## Starter kit overview
 
 ### ECS Task Business Logic
 
-We run a simple business logic within an ECS task. It copies a file from one folder of an S3 bucket to an another folder. We will run multiple instances of the task simultaneously with different runtime parameters.
+We run a simple business logic within an ECS task. It creates a copy of the input file in S3 bucket. We will run multiple instances of the task simultaneously.
 
 ---
 
 ### Amazon DynamoDB Tables
+
+Each pattern requires 2 DynamoDB tables. They are workflow_summary and workflow_details. workflow_summary is used to audit the status of overall workflow execution status. workflow_details is used to audit the status of individual ECS tasks. The schema of the DynamoDB tables is described in the below table.
 
   | Table    | Schema |  Capacity   |
   |----------| ------ | ----------- |
@@ -55,7 +58,7 @@ We run a simple business logic within an ECS task. It copies a file from one fol
 
 ### Workflow Specification
 
-We create 2 Step Functions State machines to demonstrate the design patterns. State machine is executed with a JSON specifications as an input. The specs have two parts - 1) values for ECS cluster, DynamoDB tables, and other AWS resources used in the starter kit. 2) list of ECS tasks to run.  Table below describes the specs.
+We create 2 Step Functions State machines to demonstrate the design patterns. State machine is executed with a JSON specs as an input. The specs have two parts - 1) values for ECS cluster, DynamoDB tables, subnets, security groups, S3 bucket etc. 2) list of ECS tasks to run. Table below describes the specs.
 
  | JSON Attribute  | Description   |
  |-------------------  | ------------- |
@@ -78,6 +81,19 @@ We create 2 Step Functions State machines to demonstrate the design patterns. St
 
 ---
 
+### AWS CDK Stacks
+
+[CdkApp](./amazon-ecs-java-starter-kit-cdk/src/main/java/software/aws/ecs/java/starterkit/cdk/CdkApp.java) runs the following stacks
+
+  | Stack Name    | Purpose   |
+  |---------------| --------- |
+  | [ECSTaskSubmissionFromLambdaPattern](./amazon-ecs-java-starter-kit-cdk/src/main/java/software/aws/ecs/java/starterkit/cdk/ECSTaskSubmissionFromLambdaPattern.java)         | This stack provisions resources needed to demonstrate Pattern 1 |
+  | [ECSTaskSubmissionFromStepFunctionsPattern](./amazon-ecs-java-starter-kit-cdk/src/main/java/software/aws/ecs/java/starterkit/cdk/ECSTaskSubmissionFromStepFunctionsPattern.java)  | This stack provisions resources needed to demonstrate Pattern 2 |
+
+---
+
+## Patterns 
+
 ### Running ECS tasks using AWS Lambda
 
 As show in the below figure, this pattern uses AWS Lambda function to run ECS tasks. We call the Lambda function as **ECS Task Launcher**. It parses workflow specs, submits ECS tasks to ECS Cluster and invokes second AWS Lambda function called **ECS Task Monitor**.
@@ -95,17 +111,6 @@ The task executed on ECS cluster is called **ECS Task**. It takes the following 
 As shown in the below figure, this pattern uses AWS Step Functions' native service integration with Amazon ECS. The role of ECS Task Monitor and the way ECS Task runs are similar what we discussed for Pattern 1.
 
 ![Alt](./resources/Amazon_ECS_Java_Starter_Kit-Architecture_Pattern_2.png)
-
----
-
-## AWS CDK Stacks
-
-[CdkApp](./amazon-ecs-java-starter-kit-cdk/src/main/java/software/aws/ecs/java/starterkit/cdk/CdkApp.java) runs the following stacks
-
-  | Stack Name    | Purpose   |
-  |---------------| --------- |
-  | [ECSTaskSubmissionFromLambdaPattern](./amazon-ecs-java-starter-kit-cdk/src/main/java/software/aws/ecs/java/starterkit/cdk/ECSTaskSubmissionFromLambdaPattern.java)         | This stack provisions resources needed to demonstrate Pattern 1 |
-  | [ECSTaskSubmissionFromStepFunctionsPattern](./amazon-ecs-java-starter-kit-cdk/src/main/java/software/aws/ecs/java/starterkit/cdk/ECSTaskSubmissionFromStepFunctionsPattern.java)  | This stack provisions resources needed to demonstrate Pattern 2 |
 
 ---
 
