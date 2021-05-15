@@ -19,7 +19,7 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 * [AWS CDK Stacks](#aws-cdk-stacks)
 * [Workflow Components](#workflow-components)
 * [AWS Components](#aws-components)
-* [DynamoDB Tables](#dynamoDB-tables)
+* [Amazon DynamoDB Tables](#Amazon-dynamoDB-tables)
 * [Build Instructions](#build-instructions)
 * [Deployment Instructions](#deployment-instructions)
 * [Testing Instructions](#testing-instructions)
@@ -110,7 +110,7 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
 
 ---
 
-### AWS Components
+## AWS Components
 
   | Component |  Purpose   |
   |-----------|  --------- |
@@ -125,7 +125,7 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
   | S3 bucket       | Amazon S3 bucket used by Amazon ECS task |
   | DynamoDB Tables | DynamoDB tables used for auditing and tracking. See next section. |
 
-### Amazon DynamoDB Tables
+## Amazon DynamoDB Tables
 
   | Table    | Schema |  Capacity   |
   |----------| ------ | ----------- |
@@ -227,7 +227,7 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
     | ECS Cluster    | 1 ECS cluster to run ECS tasks |
     | ECR Repository | 1 ECR repository to store Docker image for ECS Task binary |
     | ECS Task Definition | 1 ECS task definition for ECS Task |  
-    | Amazon DynamoDB | 2 DynamoDB tables. Refer to [DynamoDB Tables](#dynamoDB-tables) for more details |
+    | Amazon DynamoDB | 2 tables. Refer to [Amazon DynamoDB Tables](##Amazon-dynamoDB-tables) for more details |
     | Step Functions state machine | 1 State machine for orchestration |
     | AWS Lambda | Lambda Function to submit ECS tasks |
     | AWS Lambda | Lambda Function to monitor the progress of ECS tasks |
@@ -246,7 +246,7 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
     | ECS Cluster    | 1 ECS cluster to run ECS tasks |
     | ECR Repository | 1 ECR repository to store Docker image for ECS Task binary |
     | ECS Task Definition | 1 ECS task definition for ECS Task |  
-    | Amazon DynamoDB | 2 DynamoDB tables. Refer to [DynamoDB Tables](#dynamoDB-tables) for more details |
+    | Amazon DynamoDB | 2 tables. Refer to [Amazon DynamoDB Tables](##Amazon-dynamoDB-tables) for more details |
     | Step Functions state machine | 1 State machine for orchestration |
     | AWS Lambda | Lambda Function to monitor the progress of ECS tasks |
     | Amazon IAM Role | 1 IAM role per Step Functions State machine, and ECS Task Launcher. 2 IAM roles for ECS Task Definition - 1) ECS Task Role 2) ECS Task Execution Role |
