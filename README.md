@@ -12,7 +12,7 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 ## Contents
 
 * [Prerequisites](#prerequisites)
-* [Starter kit overview](#Starter-kit-overview)
+* [Overview](#Overview)
   * [ECS Task Business Logic](#ecs-task-business-logic)
   * [Amazon DynamoDB Tables](#Amazon-dynamoDB-tables)
   * [Workflow Specification](#Workflow-Specification)
@@ -38,7 +38,7 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 
 ---
 
-## Starter kit overview
+## Overview
 
 ### ECS Task Business Logic
 
