@@ -12,9 +12,10 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 ## Contents
 
 * [Prerequisites](#prerequisites)
-* [ECS Task Business Logic](ecs-task-business-logic)
-* [Architecture for ECS task submission from AWS Lambda (Pattern 1)](#architecture-for-ecs-task-submission-from-aws-lambda-pattern-1)
-* [Architecture for ECS task submission from AWS Step Functions (Pattern 2)](#architecture-for-ecs-task-submission-from-aws-step-functions-pattern-2)
+* [ECS Task Business Logic](#ecs-task-business-logic)
+* [Workflow Specification](#Workflow-Specification)
+* [Architecture Pattern 1: Running ECS tasks using AWS Lambda](#architecture-Pattern-1:-Running-ECS-tasks-using-aws-lambda)
+* [Architecture Pattern 2: Running ECS tasks using Step Functions native integration](#architecture-Pattern-2:-Running-ECS-tasks-using-Step-Functions-native-integration))
 * [AWS CDK Stacks](#aws-cdk-stacks)
 * [Workflow Components](#workflow-components)
 * [AWS Components](#aws-components)
@@ -37,17 +38,50 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 
 ## ECS Task Business Logic
 
-Using an Amazon ECS task, we will copy an S3 object from one location to another location in an Amazon S3 bucket. The business logic required to do s3 copy operation is packaged as a Docker image, uploaded to [Amazon Elastic Container Registry](https://aws.amazon.com/ecr/), and run as an ECS Task.
+We execute a simple business logic within an ECS task and it copies a file from one folder of an S3 bucket to an another folder. We will run multiple instances of the task simultaneously with different runtime parameters.
 
 ---
 
-## Architecture for ECS task submission from AWS Lambda (Pattern 1)
+## Workflow Specification
+
+We create 2 Step Functions State machines to demonstrate the design patterns. State machine is executed with a JSON specifications as an input. The specs have two parts - 1) values for ECS cluster, DynamoDB tables, and other AWS resources used in the starter kit. 2) list of ECS tasks to run.  Table below describes the specs.
+
+ | JSON Attribute  | Description   |
+ |-------------------  | ------------- |
+ | region         | AWS region used |
+ | s3BucketName   | Amazon S3 bucket used demonstrate ECS Task Business Logic |
+ | subnetIdLiteral   | List of Subnet Ids separated by a separator |
+ | separator         | The separator used in subnetIdLiteral |
+ | workflowName      | Name of the workflow name for e.g. ```amazon_ecs_starter_kit-pattern-1``` |
+ | securityGroupId   | The security group id used to run ECS tasks |
+ | ddbTableNameWFSummary | Name of the DynamoDB table for workflow summary |
+ | hashKeyWFSummary  | The hash key of workflow summary table |
+ | rangeKeyWFSummary  | The sort key of workflow summary table |
+ | ddbTableNameWFDetails  | Name of the DynamoDB table for workflow details |
+ | hashKeyWFDetails  | The hash key of workflow details table |
+ | rangeKeyWFDetails | The sort key of workflow details table |
+ | clusterName    | Name of the ECS cluster |
+ | containerName  | Name of the container |
+ | taskDefinition | Name of the ECS task definition name |
+ | taskList       | It is of type JSON Object and has one more ECS tasks. Each task has three attributes - 1) taskName (Name of the ECS task) 2) s3BucketName (S3 bucket name) 3) objectKey (Object key) |
+
+---
+
+## Architecture Pattern 1: Running ECS tasks using AWS Lambda
+
+As show in the below figure, this pattern uses AWS Lambda function to run ECS tasks. We call the Lambda function as **ECS Task Launcher**. It parses workflow specs, submits ECS tasks to ECS Cluster and invokes second AWS Lambda function called **ECS Task Monitor**.
+
+ECS Task Monitor tracks the completion status of running ECS tasks. Each time it runs, it checks the number of completed tasks versus the total number of tasks submitted and updates the DynamoDB table **workflow_summary**.
+
+The task executed on ECS cluster is called **ECS Task**. It takes the following actions - 1) reads input parameters 2) inserts a record in DynamoDB table for auditing 3) copies the input file to a target folder 4) marks the status of its job to Complete in the the DynamoDB table **workflow_detail**.
 
 ![Alt](./Amazon_ECS_Java_Starter_Kit-Architecture_Pattern_1.png)
 
 ---
 
-## Architecture for ECS task submission from AWS Step Functions (Pattern 2)
+## Architecture Pattern 2: Running ECS tasks using Step Functions native integration
+
+As shown in the below figure, this pattern uses AWS Step Functions' native service integration with Amazon ECS. The role of ECS Task Monitor and the way ECS Task runs are similar what we discussed for Pattern 1.
 
 ![Alt](./Amazon_ECS_Java_Starter_Kit-Architecture_Pattern_2.png)
 
@@ -91,7 +125,7 @@ Using an Amazon ECS task, we will copy an S3 object from one location to another
   | S3 bucket       | Amazon S3 bucket used by Amazon ECS task |
   | DynamoDB Tables | DynamoDB tables used for auditing and tracking. See next section. |
 
-### DynamoDB Tables
+### Amazon DynamoDB Tables
 
   | Table    | Schema |  Capacity   |
   |----------| ------ | ----------- |
@@ -182,47 +216,40 @@ Using an Amazon ECS task, we will copy an S3 object from one location to another
 
  1. Expected output 1: Stack for **amazon-ecs-java-starter-pattern-1** created with the following resources:
 
-    | Resource Type | Resource Name  |
-    |---------------|----------------|
-    | VPC           | amazon-ecs-java-starter-pattern-1/StarterKitVPC |
-    | Subnet        | amazon-ecs-java-starter-pattern-1/StarterKitVPC/PublicSubnet1 |
-    | Subnet        | amazon-ecs-java-starter-pattern-1/StarterKitVPC/PublicSubnet2 |
-    | Route Table   | amazon-ecs-java-starter-pattern-1/StarterKitVPC/PublicSubnet1 |
-    | Route Table   | amazon-ecs-java-starter-pattern-1/StarterKitVPC/PublicSubnet2 |
-    | Route Table   | amazon-ecs-java-starter-pattern-1/StarterKitVPC/PrivateSubnet1 |
-    | Route Table   | amazon-ecs-java-starter-pattern-1/StarterKitVPC/PrivateSubnet2 |
-    | Security Group | amazon-ecs-java-starter-pattern-1-StarterKit VPC ECR EndPoint Security Group |
-    | Security Group | amazon-ecs-java-starter-pattern-1-StarterKit VPC ECS EndPoint Security Group |
-    | Security Group | amazon-ecs-java-starter-pattern-1-StarterKit VPC ECS Agent EndPoint Security Group |
-    | Security Group | amazon-ecs-java-starter-kit-pattern-1-ecs-task-launcher |
-    | Security Group | amazon-ecs-java-starter-kit-pattern-1-ecs-task-Monitor |
-    | ECS Cluster    | amazon-ecs-java-starter-kit-pattern-1 |
-    | ECR Repository | amazon-ecs-java-starter-kit-pattern-1 |
-    | ECS Task Definition | amazon-ecs-java-starter-kit-pattern-1 |
-    | DynamoDB Table | workflow_summary_pattern_1 |
-    | DynamoDB Table | workflow_details_pattern_1 |
+    | Resource Type | Resource Details  |
+    |---------------|-------------------|
+    | VPC           | 1 VPC to launch resources needed by the starter kit |
+    | Subnet        | 2 public subnets and 2 private subnets |
+    | Route Table   | 1 route table per public, and private subnet |  
+    | Security Group | 1 security group per ECR, ECS, and ECS Agent endpoints  |
+    | Security Group | 1 security group per ECS Task Launcher and ECS Task Monitor |
+    | VPC Endpoint   | 1 VPC endpoint per Amazon DynamoDB, Amazon S3, Amazon ECS, Amazon ECS Agent, and Amazon ECR API. |
+    | ECS Cluster    | 1 ECS cluster to run run ECS tasks |
+    | ECR Repository | 1 ECR repository to store Docker image for ECS Task binary |
+    | ECS Task Definition | 1 ECS task definition for ECS Task |  
+    | Amazon DynamoDB | 2 DynamoDB tables - 1) workflow_summary 2) workflow_details |
+    | Step Functions state machine | 1 State machine for orchestration |
+    | AWS Lambda | Lambda Function to submit ECS tasks |
+    | AWS Lambda | Lambda Function to monitor the progress of ECS tasks |
+    | Amazon IAM Role | 1 IAM role per Step Functions State machine, ECS Task Launcher, ECS Task Monitor. 2 IAM roles for ECS Task Definition - 1) ECS Task Role 2) ECS Task Execution Role |
 
  1. Expected output 2: Stack for **amazon-ecs-java-starter-pattern-2** created with the following resources:
 
-    | Resource Type | Resource Name  |
-    |---------------|----------------|
-    | VPC           | amazon-ecs-java-starter-pattern-2/StarterKitVPC |
-    | Subnet        | amazon-ecs-java-starter-pattern-2/StarterKitVPC/PublicSubnet1 |
-    | Subnet        | amazon-ecs-java-starter-pattern-2/StarterKitVPC/PublicSubnet2 |
-    | Route Table   | amazon-ecs-java-starter-pattern-2/StarterKitVPC/PublicSubnet1 |
-    | Route Table   | amazon-ecs-java-starter-pattern-2/StarterKitVPC/PublicSubnet2 |
-    | Route Table   | amazon-ecs-java-starter-pattern-2/StarterKitVPC/PrivateSubnet1 |
-    | Route Table   | amazon-ecs-java-starter-pattern-2/StarterKitVPC/PrivateSubnet2 |
-    | Security Group | amazon-ecs-java-starter-pattern-2-StarterKit VPC ECR EndPoint Security Group |
-    | Security Group | amazon-ecs-java-starter-pattern-2-StarterKit VPC ECS EndPoint Security Group |
-    | Security Group | amazon-ecs-java-starter-pattern-2-StarterKit VPC ECS Agent EndPoint Security Group |
-    | Security Group | amazon-ecs-java-starter-kit-pattern-2-ecs-task-launcher |
-    | Security Group | amazon-ecs-java-starter-kit-pattern-2-ecs-task-Monitor |
-    | ECS Cluster    | amazon-ecs-java-starter-kit-pattern-2 |
-    | ECR Repository | amazon-ecs-java-starter-kit-pattern-2 |
-    | ECS Task Definition | amazon-ecs-java-starter-kit-pattern-2 |
-    | DynamoDB Table | workflow_summary_pattern_2 |
-    | DynamoDB Table | workflow_details_pattern_2 |
+    | Resource Type | Resource Details  |
+    |---------------|-------------------|
+    | VPC           | 1 VPC to launch resources needed by the starter kit |
+    | Subnet        | 2 public subnets and 2 private subnets |
+    | Route Table   | 1 route table per public, and private subnet |  
+    | Security Group | 1 security group per ECR, ECS, and ECS Agent endpoints  |
+    | Security Group | 1 security group per ECS Task Launcher and ECS Task Monitor |
+    | VPC Endpoint   | 1 VPC endpoint per Amazon DynamoDB, Amazon S3, Amazon ECS, Amazon ECS Agent, and Amazon ECR API. |
+    | ECS Cluster    | 1 ECS cluster to run run ECS tasks |
+    | ECR Repository | 1 ECR repository to store Docker image for ECS Task binary |
+    | ECS Task Definition | 1 ECS task definition for ECS Task |  
+    | Amazon DynamoDB | 2 DynamoDB tables - 1) workflow_summary 2) workflow_details |
+    | Step Functions state machine | 1 State machine for orchestration |
+    | AWS Lambda | Lambda Function to monitor the progress of ECS tasks |
+    | Amazon IAM Role | 1 IAM role per Step Functions State machine, and ECS Task Launcher. 2 IAM roles for ECS Task Definition - 1) ECS Task Role 2) ECS Task Execution Role |
 
 
  1. Edit file [workflow_specs_pattern_1.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_1.json) based on the contents from ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk/outputs.json```
