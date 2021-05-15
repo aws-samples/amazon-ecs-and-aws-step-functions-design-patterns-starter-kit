@@ -224,10 +224,10 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
     | Security Group | 1 security group per ECR, ECS, and ECS Agent endpoints  |
     | Security Group | 1 security group per ECS Task Launcher and ECS Task Monitor |
     | VPC Endpoint   | 1 VPC endpoint per Amazon DynamoDB, Amazon S3, Amazon ECS, Amazon ECS Agent, and Amazon ECR API. |
-    | ECS Cluster    | 1 ECS cluster to run run ECS tasks |
+    | ECS Cluster    | 1 ECS cluster to run ECS tasks |
     | ECR Repository | 1 ECR repository to store Docker image for ECS Task binary |
     | ECS Task Definition | 1 ECS task definition for ECS Task |  
-    | Amazon DynamoDB | 2 DynamoDB tables - 1) workflow_summary 2) workflow_details |
+    | Amazon DynamoDB | 2 DynamoDB tables. Refer to [DynamoDB Tables](#dynamoDB-tables) for more details |
     | Step Functions state machine | 1 State machine for orchestration |
     | AWS Lambda | Lambda Function to submit ECS tasks |
     | AWS Lambda | Lambda Function to monitor the progress of ECS tasks |
@@ -243,14 +243,13 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
     | Security Group | 1 security group per ECR, ECS, and ECS Agent endpoints  |
     | Security Group | 1 security group per ECS Task Launcher and ECS Task Monitor |
     | VPC Endpoint   | 1 VPC endpoint per Amazon DynamoDB, Amazon S3, Amazon ECS, Amazon ECS Agent, and Amazon ECR API. |
-    | ECS Cluster    | 1 ECS cluster to run run ECS tasks |
+    | ECS Cluster    | 1 ECS cluster to run ECS tasks |
     | ECR Repository | 1 ECR repository to store Docker image for ECS Task binary |
     | ECS Task Definition | 1 ECS task definition for ECS Task |  
-    | Amazon DynamoDB | 2 DynamoDB tables - 1) workflow_summary 2) workflow_details |
+    | Amazon DynamoDB | 2 DynamoDB tables. Refer to [DynamoDB Tables](#dynamoDB-tables) for more details |
     | Step Functions state machine | 1 State machine for orchestration |
     | AWS Lambda | Lambda Function to monitor the progress of ECS tasks |
     | Amazon IAM Role | 1 IAM role per Step Functions State machine, and ECS Task Launcher. 2 IAM roles for ECS Task Definition - 1) ECS Task Role 2) ECS Task Execution Role |
-
 
  1. Edit file [workflow_specs_pattern_1.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_1.json) based on the contents from ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk/outputs.json```
 
