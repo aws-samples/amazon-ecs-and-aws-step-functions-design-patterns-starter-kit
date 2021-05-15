@@ -1,6 +1,6 @@
 # Amazon ECS and AWS Step Functions Design Patterns Starter kit
 
-This starter kit demonstrates how to run [Amazon Elastic Container Service](https://aws.amazon.com/ecs/) (ECS) tasks using [AWS Step Functions](https://aws.amazon.com/step-functions/). We will present following design patterns:
+This starter kit demonstrates how to run [Amazon Elastic Container Service](https://aws.amazon.com/ecs/) (ECS) tasks using [AWS Step Functions](https://aws.amazon.com/step-functions/). We will implement following design patterns:
 
  1. Running ECS tasks using AWS Lambda
  1. Running ECS tasks using Step Functions native integration
@@ -21,7 +21,8 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 * [AWS CDK Stacks](#aws-cdk-stacks)
 * [Build Instructions](#build-instructions)
 * [Deployment Instructions](#deployment-instructions)
-* [Testing Instructions](#testing-instructions)
+* [Pattern 1 Testing Instructions](#Pattern-1-testing-instructions)
+* [Pattern 2 Testing Instructions](#Pattern-2-testing-instructions)
 * [Cleanup](#cleanup)
 * [Contributors](#contributors)
 
@@ -39,7 +40,7 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 
 ### ECS Task Business Logic
 
-We execute a simple business logic within an ECS task and it copies a file from one folder of an S3 bucket to an another folder. We will run multiple instances of the task simultaneously with different runtime parameters.
+We run a simple business logic within an ECS task. It copies a file from one folder of an S3 bucket to an another folder. We will run multiple instances of the task simultaneously with different runtime parameters.
 
 ---
 
@@ -85,7 +86,7 @@ ECS Task Monitor tracks the completion status of running ECS tasks. Each time it
 
 The task executed on ECS cluster is called **ECS Task**. It takes the following actions - 1) reads input parameters 2) inserts a record in DynamoDB table for auditing 3) copies the input file to a target folder 4) marks the status of its job to Complete in the the DynamoDB table **workflow_detail**.
 
-![Alt](./Amazon_ECS_Java_Starter_Kit-Architecture_Pattern_1.png)
+![Alt](./resources/Amazon_ECS_Java_Starter_Kit-Architecture_Pattern_1.png)
 
 ---
 
@@ -93,7 +94,7 @@ The task executed on ECS cluster is called **ECS Task**. It takes the following 
 
 As shown in the below figure, this pattern uses AWS Step Functions' native service integration with Amazon ECS. The role of ECS Task Monitor and the way ECS Task runs are similar what we discussed for Pattern 1.
 
-![Alt](./Amazon_ECS_Java_Starter_Kit-Architecture_Pattern_2.png)
+![Alt](./resources/Amazon_ECS_Java_Starter_Kit-Architecture_Pattern_2.png)
 
 ---
 
@@ -151,7 +152,7 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
 
 ## Deployment Instructions
 
- 1. In the terminal, go to path ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk```. Now, you are in the CDK module of this project.
+ 1. In the terminal, go to path ```/<Path_to_your_cloned_rep>/amazon-ecs-and-aws-step-functions-design-patterns-starter-kit/amazon-ecs-java-starter-kit-cdk```. Now, you are in the CDK module of this project.
 
  1. Replace **1234567890** with your AWS Account Id wherever applicable in the following steps.
 
@@ -225,35 +226,33 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
     | AWS Lambda | Lambda Function to monitor the progress of ECS tasks |
     | Amazon IAM Role | 1 IAM role per Step Functions State machine, and ECS Task Launcher. 2 IAM roles for ECS Task Definition - 1) ECS Task Role 2) ECS Task Execution Role |
 
- 1. Edit file [workflow_specs_pattern_1.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_1.json) based on the contents from ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk/outputs.json```
+ 1. Expected output 3: A file [outputs.json](./amazon-ecs-java-starter-kit-cdk/outputs.json) is created with a list of AWS resource values provisioned by the CDK.
 
- 1. Edit file [workflow_specs_pattern_2.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_2.json) based on the contents from ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk/outputs.json```
+---
 
- 1. Copy jar file to S3 bucket ```s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-1-bucket``` to test Pattern 1. Use the following command
+## Pattern 1 Testing Instructions
+
+1. Open file [workflow_specs_pattern_1.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_1.json) in your IDE and update JSON attributes based on the values for ```amazon-ecs-java-starter-pattern-1``` of ```outputs.json```.
+
+1. Open your command prompt / Mac terminal
+
+1. Go to path ```/<Path_to_your_cloned_rep>/amazon-ecs-and-aws-step-functions-design-patterns-starter-kit/amazon-ecs-java-starter-kit-tasklauncher/```
+
+1. Copy jar file to S3 bucket. Use the following command
 
     ```bash
     aws s3 cp ../amazon-ecs-java-starter-kit-tasklauncher/target/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-1-bucket/amazon_ecs_java_starter_kit_jar/
     ```
 
- 1. Copy jar file to S3 bucket ```s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-2-bucket``` to test Pattern 2. Use the following command
+1. Go to path ```/<Path_to_your_cloned_rep>/amazon-ecs-and-aws-step-functions-design-patterns-starter-kit/amazon-ecs-java-starter-kit-cdk```
 
-    ```bash
-    aws s3 cp ../amazon-ecs-java-starter-kit-tasklauncher/target/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-2-bucket/amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar
-    ```
-
----
-
-## Testing Instructions
-
-1. Make sure you are still in the path ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk```
-
-1. **Start Step Functions execution for Pattern 1**
+1. Start Step Functions execution. Use the following command
 
    ```bash
-   aws stepfunctions start-execution --state-machine-arn "arn:aws:states:${AWS_REGION}:${AWS_ACCOUNT_ID}:stateMachine:amazon-ecs-java-starter-kit-pattern-1" --input "$(cat workflow_specs_pattern_1.json )"
+   aws stepfunctions start-execution --state-machine-arn "arn:aws:states:${AWS_REGION}:${AWS_ACCOUNT_ID}:stateMachine:amazon-ecs-java-starter-kit-pattern-1" --input "$(cat workflow_specs_pattern_1.json)"
    ```
 
-1. Expected  output 1:
+1. Expected  output 1: You will get a response as follows
 
    ```bash
    {
@@ -262,88 +261,86 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
    }
    ```
 
-1. Expected output 2: When everything goes well, your State machine execution status will be successful as follows.
+1. Expected output 2: In Step Functions console, state machine ```amazon-ecs-java-starter-kit-pattern-1``` changes to Running state
 
-    ![Alt](./Pattern_1_execution_outcome.png)
+1. Expected output 3: After a minute or two, your State machine execution status will be successful as follows.
 
-1. Expected output 3: Under S3 URI ```s3://1234567890-amazon-ecs-java-starter-kit-pattern-1-bucket/amazon_ecs_java_starter_kit_jar/```, you will see a total of 11  objects. One of them is the input **amazon-ecs-java-starter-kit-tasklauncher-1.0.jar** and 10 are its copies created by ECS Tasks.
+    ![Alt](./resources/Pattern_1_execution_outcome.png)
 
-1. **Start Step Functions execution for Pattern 2**
+1. Expected output 4: In S3 bucket, you will see 10 extra jar files which are copied by ECS task instances.
+
+   ![Alt](./resources/pattern_1_test_output.png)
+
+## Pattern 2 Testing Instructions
+
+1. Open file [workflow_specs_pattern_1.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_2.json) in your IDE and update JSON attributes based on the values for ```amazon-ecs-java-starter-pattern-2``` of ```outputs.json```.
+
+1. Open your command prompt or Mac terminal
+
+1. Go to path ```/<Path_to_your_cloned_rep>/amazon-ecs-and-aws-step-functions-design-patterns-starter-kit/amazon-ecs-java-starter-kit-tasklauncher/```
+
+1. Copy jar file to S3 bucket. Use the following command
+
+    ```bash
+    aws s3 cp ../amazon-ecs-java-starter-kit-tasklauncher/target/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-2-bucket/amazon_ecs_java_starter_kit_jar/
+    ```
+
+1. Go to path ```/<Path_to_your_cloned_rep>/amazon-ecs-and-aws-step-functions-design-patterns-starter-kit/amazon-ecs-java-starter-kit-cdk```
+
+1. Start Step Functions execution. Use the following command
 
    ```bash
-   aws stepfunctions start-execution --state-machine-arn "arn:aws:states:${AWS_REGION}:${AWS_ACCOUNT_ID}:stateMachine:amazon-ecs-java-starter-kit-pattern-2" --input "$(cat workflow_specs_pattern_2.json )"
-   ```
+   aws stepfunctions start-execution --state-machine-arn "arn:aws:states:${AWS_REGION}:${AWS_ACCOUNT_ID}:stateMachine:amazon-ecs-java-starter-kit-pattern-1" --input "$(cat workflow_specs_pattern_2.json)"
 
-1. Expected  output 1:
-
-   ```bash
-   {
-    "executionArn": "arn:aws:states:us-east-2:1234567890:execution:amazon-ecs-java-starter-kit-pattern-2:17e02b1f-636b-4ffc-b061-96c9ab8e27db",
-    "startDate": "2020-12-21T10:16:30.717000-06:00"
-   }
-   ```
-
-1. Expected output 2: When everything goes well, your State machine execution status will be successful as follows.
-
-    ![Alt](./Pattern_2_execution_outcome.png)
-
-1. Expected output 3: Under S3 URI ```s3://1234567890-amazon-ecs-java-starter-kit-pattern-2-bucket/amazon_ecs_java_starter_kit_jar/```, you will see a total of 11  objects. One of them is the input **amazon-ecs-java-starter-kit-tasklauncher-1.0.jar** and 10 are its copies created by ECS Tasks.
+1. Expected outputs are similar to Pattern 1
 
 ---
 
 ## Cleanup
 
-1. Make sure you are still in the path ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk```
+1. Go to ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk```
 
-1. Delete DynamoDB tables - Pattern 1
+1. Delete DynamoDB tables
 
     ```bash
     ./delete_ddb_items.sh workflow_details_pattern_1 workflow_summary_pattern_1
     ```
 
-1. Delete DynamoDB tables - Pattern 2
-
     ```bash
     ./delete_ddb_items.sh workflow_details_pattern_2 workflow_summary_pattern_2
     ```
 
-1. Empty S3 bucket ``s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-1-bucket```
+1. Empty S3 buckets
 
     ```bash
     aws s3 ls s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-1-bucket/amazon_ecs_java_starter_kit_jar/ | grep _ | awk '{print $NF}' | while read OBJ; do aws s3 rm s3://${AWS_ACCOUNT_ID-}amazon-ecs-java-starter-kit-pattern-2-bucket/amazon_ecs_java_starter_kit_jar/$OBJ;done
     ```
 
-1. Empty S3 bucket ``s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-2-bucket```
-
     ```bash
     aws s3 ls s3://${AWS_ACCOUNT_ID-}-amazon-ecs-java-starter-kit-pattern-2-bucket/amazon_ecs_java_starter_kit_jar/ | grep _ | awk '{print $NF}' | while read OBJ; do aws s3 rm s3://${AWS_ACCOUNT_ID-}amazon-ecs-java-starter-kit-pattern-2-bucket/amazon_ecs_java_starter_kit_jar/$OBJ;done
     ```
 
-1. Delete S3 buckets S3 bucket ``s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-1-bucket```
+1. Delete S3 buckets
 
     ```bash
     aws s3 rm s3://${AWS_ACCOUNT_ID-}amazon-ecs-java-starter-kit-pattern-1-bucket/amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar
     ```
 
-1. Delete S3 buckets S3 bucket ``s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-2-bucket```
-
     ```bash
     aws s3 rm s3://${AWS_ACCOUNT_ID-}amazon-ecs-java-starter-kit-pattern-2-bucket/amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar
     ```
 
-1. Delete ECR Repository - Pattern 1
+1. Delete ECR Repositories
 
     ```bash
     aws ecr delete-repository --force --repository-name amazon-ecs-java-starter-kit-pattern-1
     ```
 
-1. Delete ECR Repository - Pattern 2
-
     ```bash
     aws ecr delete-repository --force --repository-name amazon-ecs-java-starter-kit-pattern-2
     ```
 
-1. Cleanup stacks for Pattern 1 and 2
+1. Cleanup stacks
 
     ```bash
     cdk destroy --force --all
