@@ -12,14 +12,13 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 ## Contents
 
 * [Prerequisites](#prerequisites)
-* [ECS Task Business Logic](#ecs-task-business-logic)
-* [Workflow Specification](#Workflow-Specification)
-* [Architecture Pattern 1: Running ECS tasks using AWS Lambda](#Running-ECS-tasks-using-aws-lambda)
-* [Architecture Pattern 2: Running ECS tasks using Step Functions native integration](#Running-ECS-tasks-using-Step-Functions-native-integration)
+* [Architecture](#Architecture)
+  * [ECS Task Business Logic](#ecs-task-business-logic)
+  * [Amazon DynamoDB Tables](#Amazon-dynamoDB-tables)
+  * [Workflow Specification](#Workflow-Specification)
+  * [Architecture Pattern 1: Running ECS tasks using AWS Lambda](#Running-ECS-tasks-using-aws-lambda)
+  * [Architecture Pattern 2: Running ECS tasks using Step Functions native integration](#Running-ECS-tasks-using-Step-Functions-native-integration)
 * [AWS CDK Stacks](#aws-cdk-stacks)
-* [Workflow Components](#workflow-components)
-* [AWS Components](#aws-components)
-* [Amazon DynamoDB Tables](#Amazon-dynamoDB-tables)
 * [Build Instructions](#build-instructions)
 * [Deployment Instructions](#deployment-instructions)
 * [Testing Instructions](#testing-instructions)
@@ -36,13 +35,24 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 
 ---
 
-## ECS Task Business Logic
+## Architecture
+
+### ECS Task Business Logic
 
 We execute a simple business logic within an ECS task and it copies a file from one folder of an S3 bucket to an another folder. We will run multiple instances of the task simultaneously with different runtime parameters.
 
 ---
 
-## Workflow Specification
+### Amazon DynamoDB Tables
+
+  | Table    | Schema |  Capacity   |
+  |----------| ------ | ----------- |
+  | workflow_summary | Partition key = workflow_name (String), Sort key = workflow_run_id (Number) | Provisioned read capacity units = 5, Provisioned write capacity units = 5  |
+  | workflow_details | Partition key = workflow_run_id (Number), Sort key = ecs_task_id (String) | Provisioned read capacity units = 5, Provisioned write capacity units = 5 |
+
+---
+
+### Workflow Specification
 
 We create 2 Step Functions State machines to demonstrate the design patterns. State machine is executed with a JSON specifications as an input. The specs have two parts - 1) values for ECS cluster, DynamoDB tables, and other AWS resources used in the starter kit. 2) list of ECS tasks to run.  Table below describes the specs.
 
@@ -67,7 +77,7 @@ We create 2 Step Functions State machines to demonstrate the design patterns. St
 
 ---
 
-## Running ECS tasks using AWS Lambda
+### Running ECS tasks using AWS Lambda
 
 As show in the below figure, this pattern uses AWS Lambda function to run ECS tasks. We call the Lambda function as **ECS Task Launcher**. It parses workflow specs, submits ECS tasks to ECS Cluster and invokes second AWS Lambda function called **ECS Task Monitor**.
 
@@ -79,7 +89,7 @@ The task executed on ECS cluster is called **ECS Task**. It takes the following 
 
 ---
 
-## Running ECS tasks using Step Functions native integration
+### Running ECS tasks using Step Functions native integration
 
 As shown in the below figure, this pattern uses AWS Step Functions' native service integration with Amazon ECS. The role of ECS Task Monitor and the way ECS Task runs are similar what we discussed for Pattern 1.
 
@@ -95,42 +105,6 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
   |---------------| --------- |
   | [ECSTaskSubmissionFromLambdaPattern](./amazon-ecs-java-starter-kit-cdk/src/main/java/software/aws/ecs/java/starterkit/cdk/ECSTaskSubmissionFromLambdaPattern.java)         | This stack provisions resources needed to demonstrate Pattern 1 |
   | [ECSTaskSubmissionFromStepFunctionsPattern](./amazon-ecs-java-starter-kit-cdk/src/main/java/software/aws/ecs/java/starterkit/cdk/ECSTaskSubmissionFromStepFunctionsPattern.java)  | This stack provisions resources needed to demonstrate Pattern 2 |
-
----
-
-## Workflow Components
-
-  | Component    | Type |  Purpose   |
-  |----------| ------ | ------------ |
-  | Workflow specs  | JSON File | A JSON file with workflow specifications to trigger the workflow |
-  | Workflow | AWS Step Functions State machine | ECS workflow written in [Amazon States Language](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html)  |
-  | ECSTaskLauncher | AWS Lambda | Lambda function to submit ECS Tasks. **Note:** this is only applicable for ECS task submission from AWS Lambda - Pattern 1. |
-  | ECSTask | ECS Task | A containerized job (process) runs as a task on Amazon ECS |
-  | ECSTaskMonitor  | AWS Lambda | Lambda function to submit ECS Tasks |
-
----
-
-## AWS Components
-
-  | Component |  Purpose   |
-  |-----------|  --------- |
-  | Amazon VPC | A dedicated Amazon Virtual Private Cloud (Amazon VPC) to deploy resources. |
-  | Subnets    | The required subnets  |
-  | Security Groups | The required subnets |
-  | VPC Endpoints   | VPC endpoints for Amazon S3  and Amazon  DynamoDB |
-  | ECS Cluster | Amazon ECS cluster |
-  | ECR Repository | Amazon ECS container registry to store Docker images for ECS task executable |
-  | ECS Task Definition | ECS Task definition |
-  | Step Function State machine | State machine workflow |
-  | S3 bucket       | Amazon S3 bucket used by Amazon ECS task |
-  | DynamoDB Tables | DynamoDB tables used for auditing and tracking. See next section. |
-
-## Amazon DynamoDB Tables
-
-  | Table    | Schema |  Capacity   |
-  |----------| ------ | ----------- |
-  | workflow_summary | Partition key = workflow_name (String), Sort key = workflow_run_id (Number) | Provisioned read capacity units = 5, Provisioned write capacity units = 5  |
-  | workflow_details | Partition key = workflow_run_id (Number), Sort key = ecs_task_id (String) | Provisioned read capacity units = 5, Provisioned write capacity units = 5 |
 
 ---
 
