@@ -20,10 +20,11 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 * [Patterns](#Patterns)
   * [Pattern 1: Running ECS tasks using AWS Lambda](#Running-ECS-tasks-using-aws-lambda)
   * [Pattern 2: Running ECS tasks using Step Functions native integration](#Running-ECS-tasks-using-Step-Functions-native-integration)
-* [Build Instructions](#build-instructions)
-* [Deployment Instructions](#deployment-instructions)
-* [Pattern 1 Testing Instructions](#Pattern-1-testing-instructions)
-* [Pattern 2 Testing Instructions](#Pattern-2-testing-instructions)
+* [Build](#build)
+* [Deploy](#deploy)
+* [Test](#Test)
+  * [Pattern 1: Testing ECS tasks using AWS Lambda](#Testing-ECS-tasks-using-aws-lambda)
+  * [Pattern 2: Testing ECS tasks using Step Functions native integration](#Testing-ECS-tasks-using-Step-Functions-native-integration)
 * [Cleanup](#cleanup)
 * [Contributors](#contributors)
 
@@ -92,7 +93,7 @@ We create 2 Step Functions State machines to demonstrate the design patterns. St
 
 ---
 
-## Patterns 
+## Patterns
 
 ### Running ECS tasks using AWS Lambda
 
@@ -114,7 +115,7 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
 
 ---
 
-## Build Instructions
+## Build
 
 1. Clone this repository to your Mac/Laptop
 
@@ -155,7 +156,7 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
 
 ---
 
-## Deployment Instructions
+## Deploy
 
  1. In the terminal, go to path ```/<Path_to_your_cloned_rep>/amazon-ecs-and-aws-step-functions-design-patterns-starter-kit/amazon-ecs-java-starter-kit-cdk```. Now, you are in the CDK module of this project.
 
@@ -235,7 +236,9 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
 
 ---
 
-## Pattern 1 Testing Instructions
+## Test
+
+### Testing ECS tasks using AWS Lambda
 
 1. Open file [workflow_specs_pattern_1.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_1.json) in your IDE and update JSON attributes based on the values for ```amazon-ecs-java-starter-pattern-1``` of ```outputs.json```.
 
@@ -276,7 +279,7 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
 
    ![Alt](./resources/pattern_1_test_output.png)
 
-## Pattern 2 Testing Instructions
+### Testing ECS tasks using Step Functions native integration
 
 1. Open file [workflow_specs_pattern_1.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_2.json) in your IDE and update JSON attributes based on the values for ```amazon-ecs-java-starter-pattern-2``` of ```outputs.json```.
 
