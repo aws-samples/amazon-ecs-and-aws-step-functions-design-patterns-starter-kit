@@ -14,8 +14,8 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 * [Prerequisites](#prerequisites)
 * [ECS Task Business Logic](#ecs-task-business-logic)
 * [Workflow Specification](#Workflow-Specification)
-* [Architecture Pattern 1: Running ECS tasks using AWS Lambda](#architecture-Pattern-1:-Running-ECS-tasks-using-aws-lambda)
-* [Architecture Pattern 2: Running ECS tasks using Step Functions native integration](#architecture-Pattern-2:-Running-ECS-tasks-using-Step-Functions-native-integration)
+* [Architecture Pattern 1: Running ECS tasks using AWS Lambda](#Running-ECS-tasks-using-aws-lambda)
+* [Architecture Pattern 2: Running ECS tasks using Step Functions native integration](#Running-ECS-tasks-using-Step-Functions-native-integration)
 * [AWS CDK Stacks](#aws-cdk-stacks)
 * [Workflow Components](#workflow-components)
 * [AWS Components](#aws-components)
@@ -67,7 +67,7 @@ We create 2 Step Functions State machines to demonstrate the design patterns. St
 
 ---
 
-## Architecture Pattern 1: Running ECS tasks using AWS Lambda
+## Running ECS tasks using AWS Lambda
 
 As show in the below figure, this pattern uses AWS Lambda function to run ECS tasks. We call the Lambda function as **ECS Task Launcher**. It parses workflow specs, submits ECS tasks to ECS Cluster and invokes second AWS Lambda function called **ECS Task Monitor**.
 
@@ -79,7 +79,7 @@ The task executed on ECS cluster is called **ECS Task**. It takes the following 
 
 ---
 
-## Architecture Pattern 2: Running ECS tasks using Step Functions native integration
+## Running ECS tasks using Step Functions native integration
 
 As shown in the below figure, this pattern uses AWS Step Functions' native service integration with Amazon ECS. The role of ECS Task Monitor and the way ECS Task runs are similar what we discussed for Pattern 1.
 
