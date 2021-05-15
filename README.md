@@ -2,8 +2,8 @@
 
 This starter kit demonstrates how to run [Amazon Elastic Container Service](https://aws.amazon.com/ecs/) (ECS) tasks using [AWS Step Functions](https://aws.amazon.com/step-functions/). We will present following design patterns:
 
- 1. ECS task submission from AWS Lambda
- 1. ECS task submission from Step Functions State Machine using native service integration
+ 1. Running ECS tasks using AWS Lambda
+ 1. Running ECS tasks using Step Functions native integration
 
 We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy application resources.
 
@@ -15,7 +15,7 @@ We use [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) to deploy 
 * [ECS Task Business Logic](#ecs-task-business-logic)
 * [Workflow Specification](#Workflow-Specification)
 * [Architecture Pattern 1: Running ECS tasks using AWS Lambda](#architecture-Pattern-1:-Running-ECS-tasks-using-aws-lambda)
-* [Architecture Pattern 2: Running ECS tasks using Step Functions native integration](#architecture-Pattern-2:-Running-ECS-tasks-using-Step-Functions-native-integration))
+* [Architecture Pattern 2: Running ECS tasks using Step Functions native integration](#architecture-Pattern-2:-Running-ECS-tasks-using-Step-Functions-native-integration)
 * [AWS CDK Stacks](#aws-cdk-stacks)
 * [Workflow Components](#workflow-components)
 * [AWS Components](#aws-components)
