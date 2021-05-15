@@ -143,22 +143,36 @@ Using an Amazon ECS task, we will copy an S3 object from one location to another
 
 ## Deployment Instructions
 
- 1. In the terminal, go to path ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk```
+ 1. In the terminal, go to path ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk```. Now, you are in the CDK module of this project.
 
  1. Replace **1234567890** with your AWS Account Id wherever applicable in the following steps.
- 
+
  1. Set these to your account and region
 
     ```bash
-    export AAWS_ACCOUNT_ID=1234567890
+    export AWS_ACCOUNT_ID=1234567890
     export AWS_REGION=us-east-2
     ```
 
  1. Bootstrap CDK
 
     ```bash
-    cdk bootstrap aws://${AAWS_ACCOUNT_ID}/$AWS_REGION
+    cdk bootstrap aws://${AWS_ACCOUNT_ID}/$AWS_REGION
     ```
+
+ 1. Output 1: In the command line, you will get the following output
+
+    ```bash
+    (node:63268) ExperimentalWarning: The fs.promises API is experimental
+    ⏳  Bootstrapping environment aws://AWS_ACCOUNT_ID/us-west-2...
+    ✅  Environment aws://AWS_ACCOUNT_ID/us-west-2 bootstrapped (no changes).
+    ```
+
+ 1. Output 2: In the AWS console under CloudFormation, you will see a Stack created as follows
+
+    ![Alt](./resources/output_of_bootstrap.png)
+
+ 1. Output 3: In the AWS console under S3, you will see a bucket created with name ```cdktoolkit-stagingbucket-*```
 
  1. Deploy both stacks
   
@@ -166,18 +180,62 @@ Using an Amazon ECS task, we will copy an S3 object from one location to another
     cdk deploy --require-approval never --all --outputs-file outputs.json
     ```
 
- 1. Edit the below files based on the contents from ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk/outputs.json```
+ 1. Expected output 1: Stack for **amazon-ecs-java-starter-pattern-1** created with the following resources:
 
-    1. [workflow_specs_pattern_1.json]()
-    1. [workflow_specs_pattern_2.json]()
+    | Resource Type | Resource Name  |
+    |---------------|----------------|
+    | VPC           | amazon-ecs-java-starter-pattern-1/StarterKitVPC |
+    | Subnet        | amazon-ecs-java-starter-pattern-1/StarterKitVPC/PublicSubnet1 |
+    | Subnet        | amazon-ecs-java-starter-pattern-1/StarterKitVPC/PublicSubnet2 |
+    | Route Table   | amazon-ecs-java-starter-pattern-1/StarterKitVPC/PublicSubnet1 |
+    | Route Table   | amazon-ecs-java-starter-pattern-1/StarterKitVPC/PublicSubnet2 |
+    | Route Table   | amazon-ecs-java-starter-pattern-1/StarterKitVPC/PrivateSubnet1 |
+    | Route Table   | amazon-ecs-java-starter-pattern-1/StarterKitVPC/PrivateSubnet2 |
+    | Security Group | amazon-ecs-java-starter-pattern-1-StarterKit VPC ECR EndPoint Security Group |
+    | Security Group | amazon-ecs-java-starter-pattern-1-StarterKit VPC ECS EndPoint Security Group |
+    | Security Group | amazon-ecs-java-starter-pattern-1-StarterKit VPC ECS Agent EndPoint Security Group |
+    | Security Group | amazon-ecs-java-starter-kit-pattern-1-ecs-task-launcher |
+    | Security Group | amazon-ecs-java-starter-kit-pattern-1-ecs-task-Monitor |
+    | ECS Cluster    | amazon-ecs-java-starter-kit-pattern-1 |
+    | ECR Repository | amazon-ecs-java-starter-kit-pattern-1 |
+    | ECS Task Definition | amazon-ecs-java-starter-kit-pattern-1 |
+    | DynamoDB Table | workflow_summary_pattern_1 |
+    | DynamoDB Table | workflow_details_pattern_1 |
 
- 1. Copy jar files to S3 Bucket for Pattern 1
+ 1. Expected output 2: Stack for **amazon-ecs-java-starter-pattern-2** created with the following resources:
+
+    | Resource Type | Resource Name  |
+    |---------------|----------------|
+    | VPC           | amazon-ecs-java-starter-pattern-2/StarterKitVPC |
+    | Subnet        | amazon-ecs-java-starter-pattern-2/StarterKitVPC/PublicSubnet1 |
+    | Subnet        | amazon-ecs-java-starter-pattern-2/StarterKitVPC/PublicSubnet2 |
+    | Route Table   | amazon-ecs-java-starter-pattern-2/StarterKitVPC/PublicSubnet1 |
+    | Route Table   | amazon-ecs-java-starter-pattern-2/StarterKitVPC/PublicSubnet2 |
+    | Route Table   | amazon-ecs-java-starter-pattern-2/StarterKitVPC/PrivateSubnet1 |
+    | Route Table   | amazon-ecs-java-starter-pattern-2/StarterKitVPC/PrivateSubnet2 |
+    | Security Group | amazon-ecs-java-starter-pattern-2-StarterKit VPC ECR EndPoint Security Group |
+    | Security Group | amazon-ecs-java-starter-pattern-2-StarterKit VPC ECS EndPoint Security Group |
+    | Security Group | amazon-ecs-java-starter-pattern-2-StarterKit VPC ECS Agent EndPoint Security Group |
+    | Security Group | amazon-ecs-java-starter-kit-pattern-2-ecs-task-launcher |
+    | Security Group | amazon-ecs-java-starter-kit-pattern-2-ecs-task-Monitor |
+    | ECS Cluster    | amazon-ecs-java-starter-kit-pattern-2 |
+    | ECR Repository | amazon-ecs-java-starter-kit-pattern-2 |
+    | ECS Task Definition | amazon-ecs-java-starter-kit-pattern-2 |
+    | DynamoDB Table | workflow_summary_pattern_2 |
+    | DynamoDB Table | workflow_details_pattern_2 |
+
+
+ 1. Edit file [workflow_specs_pattern_1.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_1.json) based on the contents from ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk/outputs.json```
+
+ 1. Edit file [workflow_specs_pattern_2.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_2.json) based on the contents from ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk/outputs.json```
+
+ 1. Copy jar file to S3 bucket ```s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-1-bucket``` to test Pattern 1. Use the following command
 
     ```bash
     aws s3 cp ../amazon-ecs-java-starter-kit-tasklauncher/target/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-1-bucket/amazon_ecs_java_starter_kit_jar/
     ```
 
- 1. Copy jar files to S3 Bucket for Pattern 2
+ 1. Copy jar file to S3 bucket ```s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-2-bucket``` to test Pattern 2. Use the following command
 
     ```bash
     aws s3 cp ../amazon-ecs-java-starter-kit-tasklauncher/target/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-2-bucket/amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar
@@ -237,37 +295,37 @@ Using an Amazon ECS task, we will copy an S3 object from one location to another
 
 1. Make sure you are still in the path ```/<Path_to_your_cloned_rep>/Amazon-ecs-java-starter-kit/amazon-ecs-java-starter-kit-cdk```
 
-1. Cleanup DDB Tables - Pattern 1
+1. Delete DynamoDB tables - Pattern 1
 
     ```bash
     ./delete_ddb_items.sh workflow_details_pattern_1 workflow_summary_pattern_1
     ```
 
-1. Cleanup DDB Tables - Pattern 2
+1. Delete DynamoDB tables - Pattern 2
 
     ```bash
     ./delete_ddb_items.sh workflow_details_pattern_2 workflow_summary_pattern_2
     ```
 
-1. Cleanup S3 Bucket of copied objects - Pattern 1
+1. Empty S3 bucket ``s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-1-bucket```
 
     ```bash
     aws s3 ls s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-1-bucket/amazon_ecs_java_starter_kit_jar/ | grep _ | awk '{print $NF}' | while read OBJ; do aws s3 rm s3://${AWS_ACCOUNT_ID-}amazon-ecs-java-starter-kit-pattern-2-bucket/amazon_ecs_java_starter_kit_jar/$OBJ;done
     ```
 
-1. Cleanup S3 Bucket of copied objects - Pattern 2
+1. Empty S3 bucket ``s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-2-bucket```
 
     ```bash
     aws s3 ls s3://${AWS_ACCOUNT_ID-}-amazon-ecs-java-starter-kit-pattern-2-bucket/amazon_ecs_java_starter_kit_jar/ | grep _ | awk '{print $NF}' | while read OBJ; do aws s3 rm s3://${AWS_ACCOUNT_ID-}amazon-ecs-java-starter-kit-pattern-2-bucket/amazon_ecs_java_starter_kit_jar/$OBJ;done
     ```
 
-1. Cleanup S3 Buckets - Pattern 1
+1. Delete S3 buckets S3 bucket ``s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-1-bucket```
 
     ```bash
     aws s3 rm s3://${AWS_ACCOUNT_ID-}amazon-ecs-java-starter-kit-pattern-1-bucket/amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar
     ```
 
-1. Cleanup S3 Buckets - Pattern 2
+1. Delete S3 buckets S3 bucket ``s3://${AWS_ACCOUNT_ID}-amazon-ecs-java-starter-kit-pattern-2-bucket```
 
     ```bash
     aws s3 rm s3://${AWS_ACCOUNT_ID-}amazon-ecs-java-starter-kit-pattern-2-bucket/amazon_ecs_java_starter_kit_jar/amazon-ecs-java-starter-kit-tasklauncher-1.0.jar
