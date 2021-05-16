@@ -97,7 +97,7 @@ We create 2 Step Functions State machines to demonstrate the design patterns. St
 
 ### Running ECS tasks using AWS Lambda
 
-As show in the below figure, this pattern uses AWS Lambda function to run ECS tasks. We call the Lambda function as **ECS Task Launcher**. It parses workflow specs, submits ECS tasks to ECS Cluster and invokes second AWS Lambda function called **ECS Task Monitor**.
+As show in the below figure, this pattern (Pattern 1) uses AWS Lambda function to run ECS tasks. We call the Lambda function as **ECS Task Launcher**. It parses workflow specs, submits ECS tasks to ECS Cluster and invokes second AWS Lambda function called **ECS Task Monitor**.
 
 ECS Task Monitor tracks the completion status of running ECS tasks. Each time it runs, it checks the number of completed tasks versus the total number of tasks submitted and updates the DynamoDB table **workflow_summary**.
 
@@ -109,7 +109,7 @@ The task executed on ECS cluster is called **ECS Task**. It takes the following 
 
 ### Running ECS tasks using Step Functions native integration
 
-As shown in the below figure, this pattern uses AWS Step Functions' native service integration with Amazon ECS. The role of ECS Task Monitor and the way ECS Task runs are similar what we discussed for Pattern 1.
+As shown in the below figure, this pattern (Pattern 2) uses AWS Step Functions' native service integration with Amazon ECS. Unlike the usage of a Lambda function in Pattern 1, we use [Parallel state](https://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language-parallel-state.html) to run ECS tasks. The number of tasks run depends on the size of ```"taskList":[]``` in [workflow_specs_pattern_2.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_2.json). The role of ECS Task Monitor and the way ECS Task runs are similar what we discussed for Pattern 1.
 
 ![Alt](./resources/Amazon_ECS_Java_Starter_Kit-Architecture_Pattern_2.png)
 
@@ -281,7 +281,7 @@ As shown in the below figure, this pattern uses AWS Step Functions' native servi
 
 ### Testing ECS tasks using Step Functions native integration
 
-1. Open file [workflow_specs_pattern_1.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_2.json) in your IDE and update JSON attributes based on the values for ```amazon-ecs-java-starter-pattern-2``` of ```outputs.json```.
+1. Open file [workflow_specs_pattern_2.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_2.json) in your IDE and update JSON attributes based on the values for ```amazon-ecs-java-starter-pattern-2``` of ```outputs.json```.
 
 1. Open your command prompt or Mac terminal
 
