@@ -55,7 +55,7 @@ Each pattern requires 2 DynamoDB tables. They are workflow_summary and workflow_
   | workflow_summary_pattern_x | Partition key = workflow_name (String), Sort key = workflow_run_id (Number) | Provisioned read capacity units = 5, Provisioned write capacity units = 5  |
   | workflow_details_pattern_y | Partition key = workflow_run_id (Number), Sort key = ecs_task_id (String) | Provisioned read capacity units = 5, Provisioned write capacity units = 5 |
 
-  **Note:** here, x and y represent either 1 or 2
+  **Note:** here, x and y represent either 1 or 2.
 
 ---
 
@@ -281,7 +281,7 @@ As shown in the below figure, this pattern (Pattern 2) uses AWS Step Functions' 
 
    ![Alt](./resources/pattern_1_test_output.png)
 
-1. Expected output 5:
+1. Expected output 5: In DynamoDB tables, you will find new items as follows:
 
     | Table    | Number of items | Sample column values |
     |----------| ----------------| ------------- |
