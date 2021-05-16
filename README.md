@@ -109,7 +109,7 @@ The task executed on ECS cluster is called **ECS Task**. It takes the following 
 
 ### Running ECS tasks using Step Functions native integration
 
-As shown in the below figure, this pattern (Pattern 2) uses AWS Step Functions' native integration with Amazon ECS. Unlike the usage of a Lambda function in Pattern 1, we use [Parallel state](https://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language-parallel-state.html) to run ECS tasks. The number of tasks run depends on the size of ```"taskList":[]``` in [workflow_specs_pattern_2.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_2.json). The role of ECS Task Monitor and the way ECS Task runs are similar what we discussed for Pattern 1.
+As shown in the below figure, this pattern (Pattern 2) uses AWS Step Functions' native integration with Amazon ECS. Unlike the usage of a Lambda function in Pattern 1, we use [Parallel state](https://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language-parallel-state.html) to run ECS tasks. The number of tasks run depends on the size of ```"taskList":[]``` in [workflow_specs_pattern_2.json](./amazon-ecs-java-starter-kit-cdk/workflow_specs_pattern_2.json). The role of ECS Task Monitor and the way ECS Task executes are similar to Pattern 1.
 
 ![Alt](./resources/Amazon_ECS_Java_Starter_Kit-Architecture_Pattern_2.png)
 
