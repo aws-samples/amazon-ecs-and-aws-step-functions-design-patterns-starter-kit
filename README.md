@@ -80,7 +80,7 @@ We create 2 Step Functions State machines to demonstrate the design patterns. St
  | clusterName    | Name of the ECS cluster |
  | containerName  | Name of the container |
  | taskDefinition | Name of the ECS task definition name |
- | taskList       | It is of type JSON Object and has one more ECS tasks. Each task has three attributes - 1) taskName (Name of the ECS task) 2) s3BucketName (S3 bucket name) 3) objectKey (Object key) |
+ | taskList       | It has specs for one more ECS tasks. These specs drive the business logic of a task. Each task has three attributes - 1) taskName (Name of the ECS task) 2) s3BucketName (S3 bucket name) 3) objectKey (Object key) |
 
 ---
 
