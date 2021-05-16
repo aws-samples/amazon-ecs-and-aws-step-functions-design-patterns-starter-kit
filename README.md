@@ -52,8 +52,10 @@ Each pattern requires 2 DynamoDB tables. They are workflow_summary and workflow_
 
   | Table    | Schema |  Capacity   |
   |----------| ------ | ----------- |
-  | workflow_summary | Partition key = workflow_name (String), Sort key = workflow_run_id (Number) | Provisioned read capacity units = 5, Provisioned write capacity units = 5  |
-  | workflow_details | Partition key = workflow_run_id (Number), Sort key = ecs_task_id (String) | Provisioned read capacity units = 5, Provisioned write capacity units = 5 |
+  | workflow_summary_pattern_x | Partition key = workflow_name (String), Sort key = workflow_run_id (Number) | Provisioned read capacity units = 5, Provisioned write capacity units = 5  |
+  | workflow_details_pattern_y | Partition key = workflow_run_id (Number), Sort key = ecs_task_id (String) | Provisioned read capacity units = 5, Provisioned write capacity units = 5 |
+
+  **Note:** here, x and y represent either 1 or 2
 
 ---
 
@@ -278,6 +280,13 @@ As shown in the below figure, this pattern (Pattern 2) uses AWS Step Functions' 
 1. Expected output 4: In S3 bucket, you will see 10 extra jar files which are copied by ECS task instances.
 
    ![Alt](./resources/pattern_1_test_output.png)
+
+1. Expected output 5:
+
+    | Table    | Number of items | Sample column values |
+    |----------| ----------------| ------------- |
+    | workflow_summary_pattern_1 | 1 | number_of_tasks = 10, completed_tasks = 10 |
+    | workflow_details_pattern_1 | 10 | status = Completed |
 
 ### Testing ECS tasks using Step Functions native integration
 
