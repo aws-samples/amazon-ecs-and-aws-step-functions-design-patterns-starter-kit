@@ -1,7 +1,7 @@
 # CLI commands
 
 # Set these to your account and region
-export AAWS_ACCOUNT_ID=927825637834
+export AAWS_ACCOUNT_ID=1234567890
 export AWS_REGION=us-east-2
 
 # BootStrap CDK
@@ -24,12 +24,12 @@ aws stepfunctions start-execution --state-machine-arn "arn:aws:states:${AWS_REGI
 
 REGION}:${AWS_ACCOUNT_ID}:stateMachine:amazon-ecs-java-starter-kit-pattern-1" --input "$(cat workflow_specs_pattern_1.json )"
 {
-    "executionArn": "arn:aws:states:us-east-2:927825637834:execution:amazon-ecs-java-starter-kit-pattern-1:4ea1f256-a0bb-4692-b63a-6b80edc02cb7",
+    "executionArn": "arn:aws:states:us-east-2:1234567890:execution:amazon-ecs-java-starter-kit-pattern-1:4ea1f256-a0bb-4692-b63a-6b80edc02cb7",
     "startDate": "2020-12-21T09:54:29.385000-06:00"
 }
 
 {
-    "executionArn": "arn:aws:states:us-east-2:927825637834:execution:amazon-ecs-java-starter-kit-pattern-2:17e02b1f-636b-4ffc-b061-96c9ab8e27db",
+    "executionArn": "arn:aws:states:us-east-2:1234567890:execution:amazon-ecs-java-starter-kit-pattern-2:17e02b1f-636b-4ffc-b061-96c9ab8e27db",
     "startDate": "2020-12-21T10:16:30.717000-06:00"
 }
 
